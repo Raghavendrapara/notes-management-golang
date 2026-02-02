@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"strings"
 )
 
 /*
@@ -61,6 +62,8 @@ func main() {
 	// pic.Show(Pic)
 	maps()
 
+	WordCount("abc def ghi")
+
 }
 
 func rangeOnArrays() {
@@ -92,4 +95,24 @@ func maps() {
 	m = make(map[string]Vertex)
 	m["Bell Labs"] = Vertex{1, 5}
 	fmt.Println(m)
+
+	a := make(map[string]int)
+	a["a"] = 1
+	v, ok := a["a"]
+	fmt.Println(a, v, ok)
+}
+func WordCount(s string) map[string]int {
+	a := make(map[string]int)
+	words := strings.Fields(s)
+	for f := range words {
+		fmt.Println(words[f])
+		// v,ok :=a[f]
+		// if ok {
+		// 	a[f]+=1
+		// }else{
+		// 	a[f]=1
+		// }
+	}
+
+	return a
 }
