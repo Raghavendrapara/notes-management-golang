@@ -102,7 +102,11 @@ func maps() {
 	fmt.Println(a, v, ok)
 }
 func WordCount(s string) map[string]int {
+
 	a := make(map[string]int)
+	if len(s) == 0 {
+		return a
+	}
 	words := strings.Fields(s)
 	for f := range words {
 		fmt.Println(words[f])
