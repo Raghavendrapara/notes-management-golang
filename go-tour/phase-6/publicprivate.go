@@ -1,0 +1,95 @@
+package main
+
+import (
+	"context"
+	"fmt"
+	"time"
+)
+
+type PMS interface {
+	book()
+	cancel()
+	change()
+}
+
+//	type User struct {
+//		Name         string
+//		password     string
+//		items        map[string]string
+//		appointments map[string]Appointment
+//	}
+type Appointment struct {
+	DoctorName  Doctor
+	BookingTime string
+}
+
+type Doctor struct {
+	Name string
+	Fees int
+}
+
+func main() {
+	ctx, cancel := context.WithTimeout(context.Background(), 2*time.Second)
+	defer cancel()
+	fmt.Println("helo")
+	<-ctx.Done()
+
+	user := &User{Balance: 500}
+
+	stripe := &Stripe{}
+
+	ProcessCheckout(user, stripe)
+
+	paypal := &PayPal{}
+
+	ProcessCheckout(user, paypal)
+}
+
+//Payments
+
+type PaymentGateway interface {
+	Pay(amount float64) bool
+}
+
+type Stripe struct{}
+
+func (s *Stripe) Pay(amount float64) bool {
+	fmt.Println("From Stripe")
+	return true
+}
+
+type PayPal struct{}
+
+func (p *PayPal) Pay(amount float64) bool {
+	fmt.Println("From PayPal")
+	return true
+}
+
+func ProcessCheckout(u *User, gateway PaymentGateway) {
+
+	price := 500.0
+
+	if gateway.Pay(price) {
+		err := u.Charge(price)
+		if err == nil {
+			fmt.Println("Success")
+		} else {
+			fmt.Println(err)
+		}
+	}
+}
+
+type User struct {
+	ID      int
+	Balance float64
+}
+
+func (u *User) Charge(amount float64) error {
+	if u.Balance < amount {
+		return fmt.Errorf("Insufficient")
+	}
+
+	u.Balance = u.Balance - amount
+
+	return nil
+}
