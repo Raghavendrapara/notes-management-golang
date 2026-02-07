@@ -43,6 +43,9 @@ func main() {
 	paypal := &PayPal{}
 
 	ProcessCheckout(user, paypal)
+
+	v := 23425453434666675
+	interfaceSwitch(v)
 }
 
 //Payments
@@ -92,4 +95,18 @@ func (u *User) Charge(amount float64) error {
 	u.Balance = u.Balance - amount
 
 	return nil
+}
+
+func interfaceSwitch(i interface{}) {
+	switch v := i.(type) {
+	case int:
+		fmt.Printf("Integer : %d \n", v*2)
+	case string:
+		fmt.Printf("I am a string of len %d\n", len(v))
+	case User:
+		fmt.Printf("I am a User object: \n", v.ID)
+	default:
+		fmt.Printf("I don't know what I am\n")
+
+	}
 }
